@@ -17,8 +17,6 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
-import net.minecraft.util.FastColor.ARGB32;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import org.apache.logging.log4j.LogManager;
@@ -33,8 +31,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static dzwdz.chat_heads.config.RenderPosition.BEFORE_LINE;
-import static dzwdz.chat_heads.config.SenderDetection.HEURISTIC_ONLY;
-import static dzwdz.chat_heads.config.SenderDetection.UUID_ONLY;
+import static dzwdz.chat_heads.config.SenderDetection.*;
 import static net.minecraft.network.chat.ClickEvent.Action.SUGGEST_COMMAND;
 
 /*
@@ -137,6 +134,10 @@ public class ChatHeads {
         }
     }
 
+    public static Component playerHead(UUID playerId) {
+        return InlinePlayerHeads.playerHead(playerId);
+    }
+
     @NotNull
     public static HeadData getLineData() {
         return refreshing ? refreshingLineData : lineData;
@@ -186,6 +187,9 @@ public class ChatHeads {
 
     @NotNull
     private static HeadData detectPlayer(Component message, @Nullable ChatType.Bound bound, @Nullable PlayerInfo playerInfo) {
+        var senderDetection = ChatHeads.CONFIG.senderDetection();
+        if (senderDetection == DISABLED) return HeadData.EMPTY;
+
         HeadData headData = detectShowcaseItemMessage(message);
         if (headData != null) return headData;
 
@@ -536,6 +540,14 @@ public class ChatHeads {
     }
 
     public static void renderChatHead(GuiGraphics guiGraphics, int x, int y, PlayerInfo owner, float opacity, boolean drawShadow) {
+        renderChatHead(guiGraphics, x, y, owner, opacity, drawShadow, false);
+    }
+
+    public static void renderInlineChatHead(GuiGraphics guiGraphics, int x, int y, PlayerInfo owner, float opacity) {
+        renderChatHead(guiGraphics, x, y, owner, opacity, ChatHeads.CONFIG.drawShadow(), true);
+    }
+
+    private static void renderChatHead(GuiGraphics guiGraphics, int x, int y, PlayerInfo owner, float opacity, boolean drawShadow, boolean showHatWhenPlayerUnavailable) {
         ResourceLocation skinLocation = owner.getSkin().texture();
 
         if (opacity != 1.0f)

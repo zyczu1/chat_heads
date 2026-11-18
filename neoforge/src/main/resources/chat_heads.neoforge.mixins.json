@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_${java_version}",
   "client": [
     "ChatListenerMixin",
+    "GuiGraphicsMixin",
     "compat.ShowcaseItemFeatureMixin"
   ],
   "plugin": "dzwdz.chat_heads.neoforge.MixinPlugin",

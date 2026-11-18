@@ -53,6 +53,13 @@ public abstract class ChatComponentMixin {
     public void chatheads$renderChatHead(GuiGraphics guiGraphics, int tickCount, int mouseX, int mouseY, boolean focused, CallbackInfo ci,
             @Local GuiMessage.Line guiMessage, @Share("y") LocalIntRef yRef, @Share("opacity") LocalFloatRef opacityRef) {
         HeadData headData = ChatHeads.getHeadData(guiMessage);
+
+        ChatHeads.guiGraphics = guiGraphics;
+        ChatHeads.renderHeadData = HeadData.EMPTY;
+        ChatHeads.renderHeadOpacity = opacityRef.get();
+        ChatHeads.renderedChars = 0;
+        ChatHeads.renderedShadowChars = 0;
+
         if (headData == HeadData.EMPTY)
             return;
 
@@ -60,11 +67,11 @@ public abstract class ChatComponentMixin {
             ChatHeads.renderChatHead(guiGraphics, 0, yRef.get(), headData.playerInfo(), opacityRef.get());
         } else {
             // -> FontStringRenderOutputMixin
-            ChatHeads.guiGraphics = guiGraphics;
+//            ChatHeads.guiGraphics = guiGraphics;
             ChatHeads.renderHeadData = headData;
-            ChatHeads.renderHeadOpacity = opacityRef.get();
-            ChatHeads.renderedChars = 0;
-            ChatHeads.renderedShadowChars = 0;
+//            ChatHeads.renderHeadOpacity = opacityRef.get();
+//            ChatHeads.renderedChars = 0;
+//            ChatHeads.renderedShadowChars = 0;
         }
     }
 

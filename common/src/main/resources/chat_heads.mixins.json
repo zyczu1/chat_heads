@@ -24,5 +24,8 @@
   "plugin": "dzwdz.chat_heads.MixinPlugin",
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "MixinSkullBlockEntity"
+  ]
 }

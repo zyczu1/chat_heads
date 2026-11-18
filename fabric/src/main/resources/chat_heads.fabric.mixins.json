@@ -4,7 +4,8 @@
   "package": "dzwdz.chat_heads.fabric.mixin",
   "compatibilityLevel": "JAVA_${java_version}",
   "client": [
-    "ChatListenerMixin"
+    "ChatListenerMixin",
+    "GuiGraphicsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
